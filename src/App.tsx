@@ -1,35 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  Routes,
+  Route,
+  Outlet,
+  Link,
+  useMatch,
+  useResolvedPath,
+} from "react-router-dom";
+import type { LinkProps } from "react-router-dom";
+import Home from './Home';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+    <div>
+      <h1>Custom Link Example</h1>
+
+      <p>
+        This example demonstrates how to create a custom{" "}
+        <code>&lt;Link&gt;</code> component that knows whether or not it is
+        "active" using the low-level <code>useResolvedPath()</code> and{" "}
+        <code>useMatch()</code> hooks.
       </p>
-    </>
-  )
+
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+function CustomLink({ children, to, ...props }: LinkProps) {
+  let resolved = useResolvedPath(to);
+  let match = useMatch({ path: resolved.pathname, end: true });
+
+  return (
+    <div>
+      <Link
+        style={{ textDecoration: match ? "underline" : "none" }}
+        to={to}
+        {...props}
+      >
+        {children}
+      </Link>
+      {match && " (active)"}
+    </div>
+  );
+}
+
+function Layout() {
+  return (
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <CustomLink to="/">Home</CustomLink>
+          </li>
+          <li>
+            <CustomLink to="/about">About</CustomLink>
+          </li>
+        </ul>
+      </nav>
+
+      <hr />
+
+      <Outlet />
+    </div>
+  );
+}
+
+
+
+function About() {
+  return (
+    <div>
+      <h1>About</h1>
+    </div>
+  );
+}
+
+function NoMatch() {
+  return (
+    <div>
+      <h1>Nothing to see here!</h1>
+      <p>
+        <Link to="/">Go to the home page</Link>
+      </p>
+    </div>
+  );
+}
