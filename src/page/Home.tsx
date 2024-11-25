@@ -19,22 +19,20 @@ export default function Home() {
   // Handle the first generate image button click (use userPrompt)
   const handleGenerateUserImage = async () => {
     try {
-      // Fetch the image ID from the generated image
-      const data = await fetchGeneratedImage(userPrompt);
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
+      const data = await fetchGeneratedImage(prompt);
       console.log("Generated Image from User Prompt:", data);
 
-      // Extract image ID from the response
       const imageId = data.id;
-      //   const imageId = "96acd5fa-f70d-4061-a283-21e214371375";
 
-      // Fetch the image data using the image ID
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
       const info = await fetchImage(imageId);
       console.log("Fetched Image Data:", info);
 
-      // Get the image URL from the fetched data and update the state
-      // Assuming info object contains the imageUrl
-      const imageUrl = info?.imageUrl; // Use optional chaining to safely access imageUrl
-      setImageUrl(imageUrl); // Set the image URL to be used in the image component
+      const imageUrl = info?.imageUrl;
+      setImageUrl(imageUrl);
     } catch (error) {
       console.error("Error generating image from user prompt:", error);
     }
@@ -43,20 +41,20 @@ export default function Home() {
   // Handle the second generate image button click (use magicalPrompt)
   const handleGenerateMagicalImage = async () => {
     try {
-      // Fetch the image ID from the generated image
-      const data = await fetchGeneratedImage(magicalPrompt);
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if magicalPrompt is empty
+      const data = await fetchGeneratedImage(prompt);
       console.log("Generated Image from Magical Prompt:", data);
 
-      // Extract image ID from the response
       const imageId = data.id;
 
-      // Fetch the image data using the image ID
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       const info = await fetchImage(imageId);
       console.log("Fetched Image Data:", info);
 
-      // Get the image URL from the fetched data and update the state
-      const imageUrl = info?.imageUrl; // Use optional chaining to safely access imageUrl
-      setImageUrl(imageUrl); // Set the image URL to be used in the image component
+      const imageUrl = info?.imageUrl;
+      setImageUrl(imageUrl);
     } catch (error) {
       console.error("Error generating image from magical prompt:", error);
     }

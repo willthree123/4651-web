@@ -102,7 +102,7 @@ export const generateText = async (inputText: string) => {
 };
 
 // Generate image from AWS Wrapper (OpenAI model)
-export const generateImage = async (messages: { role: string; content: string }[]) => {
+export const generateImage = async (userPrompt: string) => {
   const url = new URL(`${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.GEN_IMAGE}`);
   url.searchParams.append("apiVersion", COMMON_QUERIES.imageApiVersion);
   url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
@@ -111,9 +111,9 @@ export const generateImage = async (messages: { role: string; content: string }[
     "Content-Type": "application/json",
   };
   const body = JSON.stringify({
-    messages,
+    userPrompt: userPrompt,
   });
-
+  console.log(body);
   const options: RequestInit = {
     method: "POST",
     headers,

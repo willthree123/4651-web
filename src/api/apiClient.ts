@@ -46,7 +46,7 @@ export const fetchGeneratedText = async (inputText: string) => {
       //   console.log("Yes");
     }
 
-    const data = await generateText("Be creative! You are a artist. Generate me a text prompt for generating AI image for the following object: " + inputText);
+    const data = await generateText("Be creative! You are an artist. Generate me a detailed text prompt for generating ultra realistic AI image for the following object: " + inputText);
     console.log("Generated Text:", data);
     return data;
   } catch (error) {
@@ -58,12 +58,7 @@ export const fetchGeneratedText = async (inputText: string) => {
 // Function to generate an image from AWS Wrapper (OpenAI model)
 export const fetchGeneratedImage = async (imagePrompt: string) => {
   try {
-    const data = await generateImage([
-      {
-        role: "user",
-        content: imagePrompt,
-      },
-    ]);
+    const data = await generateImage(imagePrompt);
     console.log("Generated Image:", data);
     return data;
   } catch (error) {
