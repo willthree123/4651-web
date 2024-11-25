@@ -31,8 +31,8 @@ export const uploadImageUrlsToS3 = async (image: Blob) => {
   };
 
   try {
+    // const response = await fetch(url);
     const response = await fetch(url, options);
-    // const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error("Failed to upload image to S3");
     }
@@ -64,13 +64,14 @@ export const getImageFromAWS = async (imageId: string) => {
 
 // Generate text with AWS Wrapper
 export const generateText = async (inputText: string) => {
-  const url = `${BASE_URLS.AWS_WRAPPER}${ENDPOINTS.GEN_TEXT}`;
+  const url = new URL(`${BASE_URLS.AWS_WRAPPER}${ENDPOINTS.GEN_TEXT}`);
+  url.searchParams.append("apiVersion", COMMON_QUERIES.textApiVersion);
+  url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
+  console.log("URL:", url);
   const headers = {
     "Content-Type": "application/json",
   };
   const body = JSON.stringify({
-    apiVersion: COMMON_QUERIES.textApiVersion,
-    apiKey: COMMON_QUERIES.apiKey,
     inputText,
   });
 
@@ -79,9 +80,8 @@ export const generateText = async (inputText: string) => {
     headers,
     body,
   };
-
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url.toString(), options);
     if (!response.ok) {
       throw new Error("Failed to generate text");
     }

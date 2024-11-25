@@ -24,7 +24,7 @@ const Browse: React.FC = () => {
       }
     };
 
-    // fetchCommunityImages();   //Uncomment this
+    // fetchCommunityImages(); //Uncomment this
   }, []);
 
   // Handle file selection
