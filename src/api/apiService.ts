@@ -3,7 +3,7 @@ import { BASE_URLS, COMMON_QUERIES, ENDPOINTS } from "./config";
 
 // Fetch Image URLs from Personal AWS S3
 export const getImageUrlsFromS3 = async () => {
-  const url = `${BASE_URLS.PERSONAL_AWS_GET}${ENDPOINTS.GET_IMAGE_URLS}`;
+  const url = `${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.GET_IMAGE_URLS}`;
 
   try {
     const response = await fetch(url);
@@ -19,19 +19,27 @@ export const getImageUrlsFromS3 = async () => {
 
 // Upload Image to Personal AWS S3 (binary PNG image)
 export const uploadImageUrlsToS3 = async (image: Blob) => {
-  const url = `${BASE_URLS.PERSONAL_AWS_GET}${ENDPOINTS.POST_IMAGE}`;
+  const url = `${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.POST_IMAGE}`;
   console.log(url);
   const headers = {
-    "Content-Type": "image/png",
+    "Content-Type": "application/json",
   };
+  const reader = new FileReader();
+  reader.readAsDataURL(image);
+  const base64Image = await new Promise<string>((resolve, reject) => {
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+  });
+  const body = JSON.stringify({
+    image: base64Image.split(",")[1], // Remove the data URL prefix
+  });
   const options: RequestInit = {
     method: "POST",
     headers,
-    body: image, // Send the image as binary data
+    body,
   };
 
   try {
-    // const response = await fetch(url);
     const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error("Failed to upload image to S3");
@@ -45,10 +53,11 @@ export const uploadImageUrlsToS3 = async (image: Blob) => {
 
 // Get OpenAI image from AWS Wrapper
 export const getImageFromAWS = async (imageId: string) => {
-  const url = new URL(`${BASE_URLS.AWS_WRAPPER}${ENDPOINTS.GET_IMAGE}`);
+  const url = new URL(`${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.GET_IMAGE}`);
   url.searchParams.append("apiVersion", COMMON_QUERIES.imageApiVersion);
   url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
   url.searchParams.append("imageId", imageId);
+  console.log(url);
 
   try {
     const response = await fetch(url.toString());
@@ -64,7 +73,7 @@ export const getImageFromAWS = async (imageId: string) => {
 
 // Generate text with AWS Wrapper
 export const generateText = async (inputText: string) => {
-  const url = new URL(`${BASE_URLS.PERSONAL_AWS_GET}${ENDPOINTS.GEN_TEXT}`);
+  const url = new URL(`${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.GEN_TEXT}`);
   url.searchParams.append("apiVersion", COMMON_QUERIES.textApiVersion);
   url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
   console.log("URL:", url);
@@ -94,13 +103,14 @@ export const generateText = async (inputText: string) => {
 
 // Generate image from AWS Wrapper (OpenAI model)
 export const generateImage = async (messages: { role: string; content: string }[]) => {
-  const url = `${BASE_URLS.AWS_WRAPPER}${ENDPOINTS.GEN_IMAGE}`;
+  const url = new URL(`${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.GEN_IMAGE}`);
+  url.searchParams.append("apiVersion", COMMON_QUERIES.imageApiVersion);
+  url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
+  console.log(url.toString());
   const headers = {
     "Content-Type": "application/json",
   };
   const body = JSON.stringify({
-    apiVersion: COMMON_QUERIES.imageApiVersion,
-    apiKey: COMMON_QUERIES.apiKey,
     messages,
   });
 
@@ -111,7 +121,7 @@ export const generateImage = async (messages: { role: string; content: string }[
   };
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url.toString(), options);
     if (!response.ok) {
       throw new Error("Failed to generate image");
     }

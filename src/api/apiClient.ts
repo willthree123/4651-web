@@ -61,10 +61,7 @@ export const fetchGeneratedImage = async (imagePrompt: string) => {
     const data = await generateImage([
       {
         role: "user",
-        content:
-          "Picture a sprawling metropolis in the year 2150, where [input word] shapes the very fabric of society. Skyscrapers of gleaming glass and steel rise high above, interconnected by skybridges and illuminated by neon lights. Hovercars zip through the air, and robotic assistants navigate the bustling streets. Central to this urban marvel is a massive, high-tech hub where [input word] is integrated into daily life, enhancing the capabilities of the city's residents and infrastructure. The cityscape is a blend of advanced technology and innovative design, showcasing the limitless potential of [input word]." +
-          "The word is: " +
-          imagePrompt,
+        content: imagePrompt,
       },
     ]);
     console.log("Generated Image:", data);
