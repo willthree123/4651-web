@@ -64,7 +64,7 @@ export const getImageFromAWS = async (imageId: string) => {
 
 // Generate text with AWS Wrapper
 export const generateText = async (inputText: string) => {
-  const url = new URL(`${BASE_URLS.AWS_WRAPPER}${ENDPOINTS.GEN_TEXT}`);
+  const url = new URL(`${BASE_URLS.PERSONAL_AWS_GET}${ENDPOINTS.GEN_TEXT}`);
   url.searchParams.append("apiVersion", COMMON_QUERIES.textApiVersion);
   url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
   console.log("URL:", url);

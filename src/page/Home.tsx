@@ -8,7 +8,7 @@ export default function Home() {
   const handleFetchGeneratedText = async () => {
     try {
       const data = await fetchGeneratedText(userPrompt); // Use the imported function
-      setMagicalPrompt(data.generatedText); // Assuming the API returns an object with generatedText
+      setMagicalPrompt(data.choices[0].message.content); // Assuming the API returns an object with generatedText
     } catch (error) {
       console.error("Error fetching generated text:", error);
     }

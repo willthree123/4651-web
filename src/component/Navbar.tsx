@@ -30,6 +30,10 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
           <Link to="/browse" className={linkClass("/browse")}>
             Browse
           </Link>
+          {/* testing */}
+          <Link to="/test" className={linkClass("/test")}>
+            Test
+          </Link>
         </nav>
         <div className="px-4 py-6">
           {/* Theme Switcher */}

@@ -41,11 +41,12 @@ export const fetchImage = async (imageId: string) => {
 // Function to generate text from AWS Wrapper (OpenAI)
 export const fetchGeneratedText = async (inputText: string) => {
   try {
-    const data = await generateText(
-      "Picture a sprawling metropolis in the year 2150, where [input word] shapes the very fabric of society. Skyscrapers of gleaming glass and steel rise high above, interconnected by skybridges and illuminated by neon lights. Hovercars zip through the air, and robotic assistants navigate the bustling streets. Central to this urban marvel is a massive, high-tech hub where [input word] is integrated into daily life, enhancing the capabilities of the city's residents and infrastructure. The cityscape is a blend of advanced technology and innovative design, showcasing the limitless potential of [input word]." +
-        "The word/sentencec is: " +
-        inputText
-    );
+    if (inputText === "") {
+      inputText = "kiwi fruit";
+      //   console.log("Yes");
+    }
+
+    const data = await generateText("Be creative! You are a artist. Generate me a text prompt for generating AI image for the following object: " + inputText);
     console.log("Generated Text:", data);
     return data;
   } catch (error) {
