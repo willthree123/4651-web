@@ -11,7 +11,7 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex h-screen w-64 bg-base-200 text-base-content flex-col shadow-md fixed top-0 left-0">
+      <div className="hidden lg:flex h-screen w-64 bg-base-200 text-base-content flex-col shadow-md fixed top-0 left-0 z-10">
         <div className="px-4 py-6">
           {/* App Name */}
           <Link to="/" className="btn btn-ghost normal-case text-2xl text-primary font-bold">
@@ -38,7 +38,7 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
       </div>
 
       {/* Mobile Navbar */}
-      <div className="lg:hidden bg-base-200 text-base-content shadow-md fixed top-0 left-0 w-full flex items-center justify-between px-4 py-2">
+      <div className="lg:hidden bg-base-200 text-base-content shadow-md fixed top-0 left-0 w-full flex items-center justify-between px-4 py-2 z-10">
         <div className="flex items-center space-x-4">
           {/* App Name */}
           <Link to="/" className="btn btn-ghost normal-case text-2xl text-primary font-bold">
