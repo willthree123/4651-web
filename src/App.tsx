@@ -1,93 +1,27 @@
-import {
-  Routes,
-  Route,
-  Outlet,
-  Link,
-  useMatch,
-  useResolvedPath,
-} from "react-router-dom";
-import type { LinkProps } from "react-router-dom";
-import Home from './Home';
+//App.tsx
+
+import { Routes, Route } from "react-router-dom";
+import Home from "./page/Home";
+import Browse from "./page/Browse"; // Import the Browse component
+import { useState } from "react";
+import Navbar from "./component/Navbar";
+import "./index.css";
 
 export default function App() {
+  const [darkMode, setDarkMode] = useState(true);
+
+  const toggleDarkMode = () => {
+    document.documentElement.setAttribute("data-theme", darkMode ? "light" : "dark");
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div>
-      <h1>Custom Link Example</h1>
-
-      <p>
-        This example demonstrates how to create a custom{" "}
-        <code>&lt;Link&gt;</code> component that knows whether or not it is
-        "active" using the low-level <code>useResolvedPath()</code> and{" "}
-        <code>useMatch()</code> hooks.
-      </p>
-
+    <div style={{ marginTop: 0 }}>
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/browse" element={<Browse />} /> {/* Add Browse route */}
       </Routes>
-    </div>
-  );
-}
-
-function CustomLink({ children, to, ...props }: LinkProps) {
-  let resolved = useResolvedPath(to);
-  let match = useMatch({ path: resolved.pathname, end: true });
-
-  return (
-    <div>
-      <Link
-        style={{ textDecoration: match ? "underline" : "none" }}
-        to={to}
-        {...props}
-      >
-        {children}
-      </Link>
-      {match && " (active)"}
-    </div>
-  );
-}
-
-function Layout() {
-  return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <CustomLink to="/">Home</CustomLink>
-          </li>
-          <li>
-            <CustomLink to="/about">About</CustomLink>
-          </li>
-        </ul>
-      </nav>
-
-      <hr />
-
-      <Outlet />
-    </div>
-  );
-}
-
-
-
-function About() {
-  return (
-    <div>
-      <h1>About</h1>
-    </div>
-  );
-}
-
-function NoMatch() {
-  return (
-    <div>
-      <h1>Nothing to see here!</h1>
-      <p>
-        <Link to="/">Go to the home page</Link>
-      </p>
     </div>
   );
 }
