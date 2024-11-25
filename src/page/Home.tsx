@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { fetchGeneratedImage, fetchGeneratedText, fetchImage } from "../api/apiClient"; // Import the fetchGeneratedImage function
 export default function Home() {
   const [userPrompt, setUserPrompt] = useState(""); // State for user input
