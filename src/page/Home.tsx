@@ -12,7 +12,7 @@ export default function Home() {
         {/* Changed items-center to items-end */}
         <div className="flex-grow">
           <label htmlFor="magicalPrompt" className="label">
-            <span className="label-text">Magical Prompt</span>
+            <span className="label-text">Text Prompt</span>
           </label>
           <input
             id="magicalPrompt"
