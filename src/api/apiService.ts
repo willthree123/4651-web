@@ -19,10 +19,10 @@ export const getImageUrlsFromS3 = async () => {
 
 // Upload Image to Personal AWS S3 (binary PNG image)
 export const uploadImageUrlsToS3 = async (image: Blob) => {
-  const url = `${BASE_URLS.PERSONAL_AWS_POST}${ENDPOINTS.POST_IMAGE}`;
+  const url = `${BASE_URLS.PERSONAL_AWS_GET}${ENDPOINTS.POST_IMAGE}`;
   console.log(url);
   const headers = {
-    "Content-Type": "application/png",
+    "Content-Type": "image/png",
   };
   const options: RequestInit = {
     method: "POST",
@@ -32,6 +32,7 @@ export const uploadImageUrlsToS3 = async (image: Blob) => {
 
   try {
     const response = await fetch(url, options);
+    // const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error("Failed to upload image to S3");
     }

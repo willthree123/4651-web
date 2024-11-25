@@ -1,10 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { uploadImage } from "../api/apiClient"; // Import the updated uploadImage function
+import { fetchImageUrls } from "../api/apiClient"; // Updated API for fetching image URLs
 
 const Browse: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [communityImages, setCommunityImages] = useState<string[]>([]); // State to store image URLs
+
+  // Fetch community images on component mount
+  useEffect(() => {
+    const fetchCommunityImages = async () => {
+      try {
+        const response = await fetchImageUrls();
+        if (response.status === "success") {
+          console.log("Community images:", response.data.imageUrls); // Log the image URLs
+          setCommunityImages(response.data.imageUrls); // Set the image URLs in the state
+        } else {
+          console.error("Failed to fetch community images:", response.message);
+        }
+      } catch (error) {
+        console.error("Error fetching community images:", error);
+      }
+    };
+
+    // fetchCommunityImages();   //Uncomment this
+  }, []);
 
   // Handle file selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +73,11 @@ const Browse: React.FC = () => {
     }
   };
 
+  // Handle image click to open in new tab
+  const handleImageClick = (url: string) => {
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="container mx-auto p-4 mt-16 lg:ml-64">
       {/* Row 1: Heading */}
@@ -76,7 +102,23 @@ const Browse: React.FC = () => {
       {/* Row 3: Community Creations */}
       <div className="mb-6">
         <h1 className="text-4xl font-bold text-left">Community Creations 🎨</h1>
-        {/* Add community creations here */}
+
+        {/* Display fetched community images */}
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
+          {communityImages.length > 0 ? (
+            communityImages.map((url, index) => (
+              <div
+                key={index}
+                className="w-36 h-36 flex justify-start items-start border rounded p-1" // Align to left and top, with padding to avoid image being flush to the container's edge
+                onClick={() => handleImageClick(url)} // Open image in new tab on click
+              >
+                <img src={url} alt={`Community Creation ${index}`} className="w-full h-full object-cover cursor-pointer" />
+              </div>
+            ))
+          ) : (
+            <p>Loading community images...</p>
+          )}
+        </div>
       </div>
     </div>
   );

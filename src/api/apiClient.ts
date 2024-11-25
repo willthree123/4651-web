@@ -53,7 +53,7 @@ export const fetchGeneratedText = async (inputText: string) => {
 // Function to generate an image from AWS Wrapper (OpenAI model)
 export const fetchGeneratedImage = async (imagePrompt: string) => {
   try {
-    const data = await generateImage(imagePrompt);
+    const data = await generateImage([{ role: "user", content: imagePrompt }]);
     console.log("Generated Image:", data);
     return data;
   } catch (error) {
