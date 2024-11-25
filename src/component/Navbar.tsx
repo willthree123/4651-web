@@ -19,7 +19,7 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
         <div className="px-4 py-6">
           {/* App Name */}
           <Link to="/" className="btn btn-ghost normal-case text-2xl text-primary font-bold">
-            App Name
+            DreamFrame
           </Link>
         </div>
         <nav className="flex-grow space-y-4 px-4">
@@ -29,6 +29,10 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
           </Link>
           <Link to="/browse" className={linkClass("/browse")}>
             Browse
+          </Link>
+          {/* testing */}
+          <Link to="/test" className={linkClass("/test")}>
+            Test
           </Link>
         </nav>
         <div className="px-4 py-6">
@@ -46,7 +50,7 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
         <div className="flex items-center space-x-4">
           {/* App Name */}
           <Link to="/" className="btn btn-ghost normal-case text-2xl text-primary font-bold">
-            App Name
+            DreamFrame
           </Link>
           {/* Navigation Links */}
           <Link to="/" className={`btn btn-ghost text-lg ${location.pathname === "/" ? (darkMode ? "text-gray-200" : "text-gray-800") : ""}`}>

@@ -41,7 +41,12 @@ export const fetchImage = async (imageId: string) => {
 // Function to generate text from AWS Wrapper (OpenAI)
 export const fetchGeneratedText = async (inputText: string) => {
   try {
-    const data = await generateText(inputText);
+    if (inputText === "") {
+      inputText = "kiwi fruit";
+      //   console.log("Yes");
+    }
+
+    const data = await generateText("Be creative! You are an artist. Generate me a detailed text prompt for generating ultra realistic AI image for the following object: " + inputText);
     console.log("Generated Text:", data);
     return data;
   } catch (error) {

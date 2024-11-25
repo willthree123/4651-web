@@ -1,33 +1,102 @@
+
+import React, { useState } from "react";
+import { fetchGeneratedImage, fetchGeneratedText, fetchImage } from "../api/apiClient"; // Import the fetchGeneratedImage function
 export default function Home() {
+  const [userPrompt, setUserPrompt] = useState(""); // State for user input
+  const [magicalPrompt, setMagicalPrompt] = useState(""); // State for magical prompt
+  const [imageUrl, setImageUrl] = useState<string>(""); // State for storing the image URL
+
+  // Handle button click to fetch the generated text (magic prompt)
+  const handleFetchGeneratedText = async () => {
+    try {
+      const data = await fetchGeneratedText(userPrompt); // Fetch the magic prompt using user input
+      setMagicalPrompt(data.choices[0].message.content); // Set the magical prompt from the API response
+    } catch (error) {
+      console.error("Error fetching generated text:", error);
+    }
+  };
+
+  // Handle the first generate image button click (use userPrompt)
+  const handleGenerateUserImage = async () => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
+      const data = await fetchGeneratedImage(prompt);
+      console.log("Generated Image from User Prompt:", data);
+
+      const imageId = data.id;
+
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const info = await fetchImage(imageId);
+      console.log("Fetched Image Data:", info);
+
+      const imageUrl = info?.imageUrl;
+      setImageUrl(imageUrl);
+    } catch (error) {
+      console.error("Error generating image from user prompt:", error);
+    }
+  };
+
+  // Handle the second generate image button click (use magicalPrompt)
+  const handleGenerateMagicalImage = async () => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if magicalPrompt is empty
+      const data = await fetchGeneratedImage(prompt);
+      console.log("Generated Image from Magical Prompt:", data);
+
+      const imageId = data.id;
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const info = await fetchImage(imageId);
+      console.log("Fetched Image Data:", info);
+
+      const imageUrl = info?.imageUrl;
+      setImageUrl(imageUrl);
+    } catch (error) {
+      console.error("Error generating image from magical prompt:", error);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4 mt-16 lg:ml-64">
-      {/* Added mt-16 for non-lg screens to create space for the navbar */}
-      {/* Row 1: Heading */}
       <div className="mb-6">
         <h1 className="text-4xl font-bold text-left">Create your masterpiece 🎨</h1>
       </div>
-      {/* Row 3: Magical Prompt (editable=false) & Generate Button in same row */}
+
+      {/* Row 3: User Prompt & Magic Prompt */}
       <div className="mb-6 flex gap-4 justify-start items-end">
-        {" "}
-        {/* Changed items-center to items-end */}
         <div className="flex-grow">
-          <label htmlFor="magicalPrompt" className="label">
+          <label htmlFor="userPrompt" className="label">
             <span className="label-text">Text Prompt</span>
           </label>
           <input
-            id="magicalPrompt"
+            id="userPrompt"
             type="text"
             placeholder="Input Your Prompt here..."
-            className="input input-bordered w-full" // Input fills within the max width
+            className="input input-bordered w-full"
+            value={userPrompt}
+            onChange={(e) => setUserPrompt(e.target.value)} // Handle user input
           />
         </div>
-        <button className="btn btn-secondary">Magic Prompt ✨</button>
-        <button className="btn btn-primary">Generate Image 🧪</button> {/* Removed width classes */}
+        <button
+          className="btn btn-secondary"
+          onClick={handleFetchGeneratedText} // Trigger fetch magic prompt
+        >
+          Magic Prompt ✨
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={handleGenerateUserImage} // Trigger image generation from user prompt
+        >
+          Generate Image 🧪
+        </button>
       </div>
-      {/* Row 3: Magical Prompt (editable=false) & Generate Button in same row */}
+
+      {/* Row 4: Magical Prompt (readOnly) */}
       <div className="mb-6 flex gap-4 justify-start items-end">
-        {" "}
-        {/* Changed items-center to items-end */}
         <div className="flex-grow">
           <label htmlFor="magicalPrompt" className="label">
             <span className="label-text">Magical Prompt</span>
@@ -35,18 +104,27 @@ export default function Home() {
           <input
             id="magicalPrompt"
             type="text"
-            className="input input-bordered w-full" // Input fills within the max width
+            className="input input-bordered w-full"
             readOnly
+            value={magicalPrompt} // Display fetched magical prompt
           />
         </div>
-        <button className="btn btn-primary">Generate Image 🧪</button> {/* Removed width classes */}
+        <button
+          className="btn btn-primary"
+          onClick={handleGenerateMagicalImage} // Trigger image generation from magical prompt
+        >
+          Generate Image 🧪
+        </button>
       </div>
-      {/* Row 4: Divider */}
+
+      {/* Divider */}
       <div className="divider"></div>
-      {/* Row 5: Heading for "Your Masterpiece" */}
+
+      {/* Other Content */}
       <div className="mb-6">
         <h2 className="text-3xl font-semibold text-left">Your Masterpiece</h2>
       </div>
+      {/* Remaining Layout */}
 
       {/* Row 6: Two Columns with Same Width */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -84,16 +162,23 @@ export default function Home() {
             <button className="btn btn-primary flex-1 text-sm">Upload ⬆️</button>
           </div>
         </div>
-
         {/* Column 2: 300x300 Image Placeholder */}
         <div className="flex justify-start items-start w-full">
           <div className="w-72 h-72">
-            <div className="skeleton w-full h-full text-center flex justify-center items-center ">300x300 Image Placeholder</div>
+            {/* If imageUrl is not set, show a skeleton */}
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="Generated Image"
+                className="w-full h-full object-cover"
+                onClick={() => window.open(imageUrl, "_blank")} // Open image in a new tab
+              />
+            ) : (
+              <div className="skeleton w-full h-full text-center flex justify-center items-center">300x300 Image Placeholder</div>
+            )}
           </div>
         </div>
       </div>
-
-      {/* // */}
     </div>
   );
 }
