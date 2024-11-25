@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SunIcon from "../icon/SunIcon";
 import MoonIcon from "../icon/MoonIcon";
 
@@ -8,6 +8,10 @@ interface NavbarProps {
 }
 
 export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
+  const location = useLocation(); // Get the current location
+
+  const linkClass = (path: string) => `btn btn-ghost w-full text-left text-lg ${location.pathname === path ? (darkMode ? "text-gray-200" : "text-gray-800") : ""}`;
+
   return (
     <>
       {/* Desktop Sidebar */}
@@ -20,10 +24,10 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
         </div>
         <nav className="flex-grow space-y-4 px-4">
           {/* Navigation Links */}
-          <Link to="/" className="btn btn-ghost w-full text-left text-lg">
-            Home
+          <Link to="/" className={linkClass("/")}>
+            Create
           </Link>
-          <Link to="/browse" className="btn btn-ghost w-full text-left text-lg">
+          <Link to="/browse" className={linkClass("/browse")}>
             Browse
           </Link>
         </nav>
@@ -45,10 +49,10 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
             App Name
           </Link>
           {/* Navigation Links */}
-          <Link to="/" className="btn btn-ghost text-lg">
-            Home
+          <Link to="/" className={`btn btn-ghost text-lg ${location.pathname === "/" ? (darkMode ? "text-gray-200" : "text-gray-800") : ""}`}>
+            Create
           </Link>
-          <Link to="/browse" className="btn btn-ghost text-lg">
+          <Link to="/browse" className={`btn btn-ghost text-lg ${location.pathname === "/browse" ? (darkMode ? "text-gray-200" : "text-gray-800") : ""}`}>
             Browse
           </Link>
         </div>
