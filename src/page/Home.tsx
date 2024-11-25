@@ -20,19 +20,20 @@ export default function Home() {
   const handleGenerateUserImage = async () => {
     try {
       // Fetch the image ID from the generated image
-      //   const data = await fetchGeneratedImage(userPrompt);
-      //   console.log("Generated Image from User Prompt:", data);
+      const data = await fetchGeneratedImage(userPrompt);
+      console.log("Generated Image from User Prompt:", data);
 
       // Extract image ID from the response
-      //   const imageId = data.id;
-      const imageId = " 96acd5fa-f70d-4061-a283-21e214371375";
+      const imageId = data.id;
+      //   const imageId = "96acd5fa-f70d-4061-a283-21e214371375";
 
       // Fetch the image data using the image ID
       const info = await fetchImage(imageId);
       console.log("Fetched Image Data:", info);
 
       // Get the image URL from the fetched data and update the state
-      const imageUrl = info.result.data[0].url;
+      // Assuming info object contains the imageUrl
+      const imageUrl = info?.imageUrl; // Use optional chaining to safely access imageUrl
       setImageUrl(imageUrl); // Set the image URL to be used in the image component
     } catch (error) {
       console.error("Error generating image from user prompt:", error);
@@ -42,9 +43,20 @@ export default function Home() {
   // Handle the second generate image button click (use magicalPrompt)
   const handleGenerateMagicalImage = async () => {
     try {
-      const data = await fetchGeneratedImage(magicalPrompt); // Fetch image based on magical prompt
+      // Fetch the image ID from the generated image
+      const data = await fetchGeneratedImage(magicalPrompt);
       console.log("Generated Image from Magical Prompt:", data);
-      // You can handle the image display here, e.g., set it to a state to show the image
+
+      // Extract image ID from the response
+      const imageId = data.id;
+
+      // Fetch the image data using the image ID
+      const info = await fetchImage(imageId);
+      console.log("Fetched Image Data:", info);
+
+      // Get the image URL from the fetched data and update the state
+      const imageUrl = info?.imageUrl; // Use optional chaining to safely access imageUrl
+      setImageUrl(imageUrl); // Set the image URL to be used in the image component
     } catch (error) {
       console.error("Error generating image from magical prompt:", error);
     }
@@ -156,7 +168,16 @@ export default function Home() {
         <div className="flex justify-start items-start w-full">
           <div className="w-72 h-72">
             {/* If imageUrl is not set, show a skeleton */}
-            {imageUrl ? <img src={imageUrl} alt="Generated Image" className="w-full h-full object-cover" /> : <div className="skeleton w-full h-full text-center flex justify-center items-center">300x300 Image Placeholder</div>}
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="Generated Image"
+                className="w-full h-full object-cover"
+                onClick={() => window.open(imageUrl, "_blank")} // Open image in a new tab
+              />
+            ) : (
+              <div className="skeleton w-full h-full text-center flex justify-center items-center">300x300 Image Placeholder</div>
+            )}
           </div>
         </div>
       </div>
