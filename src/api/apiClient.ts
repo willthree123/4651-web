@@ -1,37 +1,63 @@
 // src/api/apiClient.ts
 
-interface FetchOptions {
-  method: "GET" | "POST";
-  queryParams?: Record<string, string>;
-  body?: any;
-  headers?: Record<string, string>;
-}
+import { getImageUrlsFromS3, uploadImageUrlsToS3, getImageFromAWS, generateText, generateImage } from "./apiService";
 
-export async function fetchClient(baseUrl: string, endpoint: string, options: FetchOptions) {
-  const { method, queryParams = {}, body, headers = {} } = options;
-
-  // Construct query string
-  const queryString = new URLSearchParams(queryParams).toString();
-
-  // Construct full URL
-  const url = queryString ? `${baseUrl}${endpoint}?${queryString}` : `${baseUrl}${endpoint}`;
-
-  // Fetch options
-  const fetchOptions: RequestInit = {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
-    body: method === "POST" && body ? JSON.stringify(body) : undefined,
-  };
-
-  // Perform fetch
-  const response = await fetch(url, fetchOptions);
-
-  if (!response.ok) {
-    throw new Error(`Fetch error: ${response.statusText}`);
+// Function to handle fetching image URLs from S3 (Personal AWS)
+export const fetchImageUrls = async () => {
+  try {
+    const data = await getImageUrlsFromS3();
+    console.log("Image URLs:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching image URLs:", error);
+    throw error;
   }
+};
 
-  return response.json();
-}
+// Function to handle uploading an image (PNG in binary) to Personal AWS
+export const uploadImage = async (image: Blob) => {
+  try {
+    const data = await uploadImageUrlsToS3(image);
+    console.log("Uploaded Image:", data);
+    return data;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw error;
+  }
+};
+
+// Function to get an image from AWS (OpenAI image by ID)
+export const fetchImage = async (imageId: string) => {
+  try {
+    const data = await getImageFromAWS(imageId);
+    console.log("Fetched Image:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    throw error;
+  }
+};
+
+// Function to generate text from AWS Wrapper (OpenAI)
+export const fetchGeneratedText = async (inputText: string) => {
+  try {
+    const data = await generateText(inputText);
+    console.log("Generated Text:", data);
+    return data;
+  } catch (error) {
+    console.error("Error generating text:", error);
+    throw error;
+  }
+};
+
+// Function to generate an image from AWS Wrapper (OpenAI model)
+export const fetchGeneratedImage = async (imagePrompt: string) => {
+  try {
+    const data = await generateImage(imagePrompt);
+    console.log("Generated Image:", data);
+    return data;
+  } catch (error) {
+    console.error("Error generating image:", error);
+    throw error;
+  }
+};
