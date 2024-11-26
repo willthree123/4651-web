@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { fetchGeneratedImage, fetchGeneratedText } from "../api/apiClient"; // Import the fetchGeneratedImage function
+import { useState, useEffect } from "react";
+import { fetchGeneratedImage, fetchGeneratedText, uploadImage } from "../api/apiClient"; // Import the fetchGeneratedImage function
 export default function Home() {
   const [userPrompt, setUserPrompt] = useState(""); // State for user input
   const [magicalPrompt, setMagicalPrompt] = useState(""); // State for magical prompt
   const [imageUrl, setImageUrl] = useState<string>(""); // State for storing the image URL
   const [genImagePrompt, setGenImagePrompt] = useState(""); // State for image prompt text field
+  const [loading, setLoading] = useState(false); // Loading state for uploading
 
+  // useEffect(() => {
+  //   setImageUrl("https://dalleproduse.blob.core.windows.net/private/images/29eb4468-dc00-4f7e-b9d5-481cf5fd0105/generated_00.png?se=2024-11-27T19%3A46%3A05Z&sig=RKk5Bqdt%2FTUVSJJIf5sNHcEOw9na85XCU91cKJURyMA%3D&ske=2024-12-03T19%3A15%3A25Z&skoid=09ba021e-c417-441c-b203-c81e5dcd7b7f&sks=b&skt=2024-11-26T19%3A15%3A25Z&sktid=33e01921-4d64-4f8c-a055-5bdaffd5e33d&skv=2020-10-02&sp=r&spr=https&sr=b&sv=2020-10-02");
+  // }, []);
   // Handle button click to fetch the generated text (magic prompt)
   const handleFetchGeneratedText = async () => {
     try {
@@ -43,11 +47,40 @@ export default function Home() {
       console.error("Error generating image from user prompt:", error);
     }
   };
+  // Handle the upload button click to upload the image
+  const handleUploadImage = async () => {
+    if (!imageUrl) {
+      alert("Error uploading image: No image to upload.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Fetch the image from the URL as a Blob
+      const response = await fetch(imageUrl);
+      const blob = await response.blob(); // Convert the image to a Blob
+
+      // Upload the Blob instead of the image URL
+      const uploadResponse = await uploadImage(blob); // Upload the Blob to the server
+
+      if (uploadResponse.status === "success") {
+        alert("Image uploaded successfully!");
+      } else {
+        alert("Error uploading image.");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="container mx-auto p-4 mt-16 lg:ml-64">
+    <div className="container mx-auto ">
       <div className="mb-6">
-        <h1 className="text-4xl font-bold text-left">Create your masterpiece 🎨</h1>
+        <h1 className="text-4xl font-bold text-left">Create Your Masterpiece 🎨</h1>
       </div>
 
       {/* Row 3: User Prompt & Magic Prompt */}
@@ -75,20 +108,21 @@ export default function Home() {
           className="btn btn-primary"
           onClick={handleGenerateUserImage} // Trigger image generation from user prompt
         >
-          Generate Image 🧪
+          Generate Image 🖌️
         </button>
       </div>
-
+      {/* Divider */}
+      <div className="divider"></div>
       {/* Row 4: Magical Prompt (readOnly) */}
-      <div className="mb-6 flex gap-4 justify-start items-end">
+      <div className="mb-6 flex flex-row gap-4 justify-start items-end">
         <div className="flex-grow">
           <label htmlFor="magicalPrompt" className="label">
-            <span className="label-text">Magical Prompt</span>
+            <span className="label-text text-secondary">Magical Prompt</span>
           </label>
           <input
             id="magicalPrompt"
             type="text"
-            className="input input-bordered w-full"
+            className="text-secondary input input-bordered w-full input-secondary"
             readOnly
             value={magicalPrompt} // Display fetched magical prompt
           />
@@ -97,7 +131,7 @@ export default function Home() {
           className="btn btn-primary"
           onClick={handleGenerateMagicalImage} // Trigger image generation from magical prompt
         >
-          Generate Image 🧪
+          Generate Image 🖌️
         </button>
       </div>
 
@@ -106,50 +140,70 @@ export default function Home() {
 
       {/* Other Content */}
       <div className="mb-6">
-        <h2 className="text-3xl font-semibold text-left">Your Masterpiece</h2>
+        <h2 className="text-3xl font-semibold text-left text-success">Your Masterpiece 🖼️</h2>
       </div>
       {/* Remaining Layout */}
-
       {/* Row 6: Two Columns with Same Width */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         {/* Column 1: Image Prompt and Buttons */}
         <div className="space-y-4 w-full flex flex-col h-full">
-          {/* Reduced space-y-6 to space-y-4 */}
           <div className="flex-grow mb-0 p-0 flex flex-col">
             <label htmlFor="imagePrompt" className="label">
-              <span className="label-text">Image Prompt:</span>
+              <span className="label-text text-success">Image Prompt:</span>
             </label>
 
-            {/* Conditionally render skeleton loader or the input field */}
-            {genImagePrompt ? (
-              <input
-                id="imagePrompt"
-                type="text"
-                className="input input-bordered w-full flex-grow text-left align-top break-words" // Added break-words to make text wrap
-                readOnly
-                value={genImagePrompt}
-              />
-            ) : (
-              <div className="flex w-full flex-col gap-4">
-                <div className="skeleton h-32 w-full"></div>
-                {/* <div className="skeleton h-4 w-28"></div>
-                <div className="skeleton h-4 w-full"></div>
-                <div className="skeleton h-4 w-full"></div> */}
-              </div>
-            )}
+            {genImagePrompt ? <textarea id="imagePrompt" className="input input-bordered w-full flex-grow textarea textarea-success" readOnly value={genImagePrompt} /> : <div className="skeleton h-32 w-full"></div>}
           </div>
-          {/* Divider */}
-          <div className="divider my-2"></div> {/* Adjusted my-4 to my-2 for smaller spacing */}
-          {/* Buttons aligned to bottom */}
+          <div className="divider my-2"></div>
           <div className="flex gap-4 mt-auto">
-            <button className="btn btn-secondary flex-1 text-sm">Download ⬇️</button>
-            <button className="btn btn-primary flex-1 text-sm">Upload ⬆️</button>
+            <button
+              className="btn btn-success flex-1 text-sm"
+              onClick={async () => {
+                if (!imageUrl) {
+                  alert("Error downloading image.");
+                } else {
+                  try {
+                    // Fetch the image from the URL as a Blob
+                    const response = await fetch(imageUrl);
+                    const blob = await response.blob(); // Get the image as a blob
+
+                    // Create a URL for the Blob object
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    // Create a temporary anchor tag
+                    const link = document.createElement("a");
+
+                    // Set the href attribute to the Blob URL
+                    link.href = blobUrl;
+
+                    // Set the download attribute with the desired file name
+                    link.download = "generated-image.png"; // Default file name
+
+                    // Programmatically click the link to trigger the download
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Clean up the DOM and revoke the Blob URL after download
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(blobUrl);
+                  } catch (error) {
+                    console.error("Error downloading image:", error);
+                    alert("Error downloading image.");
+                  }
+                }
+              }}>
+              Download ⬇️
+            </button>
+
+            <button className="btn btn-primary flex-1 text-sm" onClick={handleUploadImage} disabled={loading}>
+              {loading ? "Uploading..." : "Upload ⬆️"}
+            </button>
           </div>
         </div>
+
         {/* Column 2: 300x300 Image Placeholder */}
         <div className="flex justify-start items-start w-full">
           <div className="w-72 h-72">
-            {/* If imageUrl is not set, show a skeleton */}
             {imageUrl ? (
               <a>
                 <img

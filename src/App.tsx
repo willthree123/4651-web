@@ -19,11 +19,13 @@ export default function App() {
   return (
     <div style={{ marginTop: 0 }}>
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/browse" element={<Browse />} /> {/* Add Browse route */}
-        {/* <Route path="/test" element={<Test />} /> Add Browse route */}
-      </Routes>
+      <div className="p-4 pt-32 lg:pt-16 lg:pl-72">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/browse" element={<Browse />} /> {/* Add Browse route */}
+          {/* <Route path="/test" element={<Test />} /> Add Browse route */}
+        </Routes>
+      </div>
     </div>
   );
 }

@@ -81,7 +81,7 @@ const Browse: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 mt-16 lg:ml-64">
+    <div className="container mx-auto ">
       {/* Row 1: Heading */}
       <div className="mb-6">
         <h1 className="text-4xl font-bold text-left">Upload Your Creation</h1>
@@ -90,15 +90,15 @@ const Browse: React.FC = () => {
 
       {/* Row 2: Image Upload */}
       <div className="mb-6">
-        <input type="file" accept="image/png" className="input input-bordered w-full max-w-xs" onChange={handleFileChange} />
+        <input type="file" accept="image/png" className="file-input file-input-bordered file-input-primary w-full max-w-xs" onChange={handleFileChange} />
+        <button className={`btn btn-primary mt-4 ml-4 ${loading ? "loading" : ""}`} onClick={handleSubmit} disabled={loading}>
+          {loading ? "Uploading..." : "Submit"}
+        </button>
         {imagePreview && (
           <div className="mt-4">
             <img src={imagePreview} alt="Selected Preview" className="w-72 h-72 object-cover border border-gray-300" />
           </div>
         )}
-        <button className={`btn btn-primary mt-4 ${loading ? "loading" : ""}`} onClick={handleSubmit} disabled={loading}>
-          {loading ? "Uploading..." : "Submit"}
-        </button>
       </div>
 
       {/* Row 3: Community Creations */}
