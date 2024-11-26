@@ -244,7 +244,7 @@ export default function Home() {
                 <img
                   src={imageUrl}
                   alt="Generated Image"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover cursor-pointer" // Add cursor-pointer class
                   onClick={() => window.open(imageUrl, "_blank")} // Open image in a new tab
                 />
               </a>
