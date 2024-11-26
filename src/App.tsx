@@ -3,7 +3,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./page/Home";
 import Browse from "./page/Browse"; // Import the Browse component
-import Test from "./page/Test"; // Import the Browse component
+// import Test from "./page/Test"; // Import the Browse component
 import { useState } from "react";
 import Navbar from "./component/Navbar";
 import "./index.css";

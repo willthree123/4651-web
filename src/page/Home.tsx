@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { fetchGeneratedImage, fetchGeneratedText, uploadImage } from "../api/apiClient"; // Import the fetchGeneratedImage function
 export default function Home() {
   const [userPrompt, setUserPrompt] = useState(""); // State for user input
@@ -37,8 +37,8 @@ export default function Home() {
   // Handle the second generate image button click (use magicalPrompt)
   const handleGenerateMagicalImage = async () => {
     try {
-      const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
-      setGenImagePrompt(magicalPrompt); // Set the image prompt text field
+      const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
+      setGenImagePrompt(prompt); // Set the image prompt text field
       const data = await fetchGeneratedImage(magicalPrompt);
 
       const imageUrl = data?.imageUrl;
