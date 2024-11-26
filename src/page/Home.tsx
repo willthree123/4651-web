@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetchGeneratedImage, fetchGeneratedText, fetchImage } from "../api/apiClient"; // Import the fetchGeneratedImage function
+import { fetchGeneratedImage, fetchGeneratedText } from "../api/apiClient"; // Import the fetchGeneratedImage function
 export default function Home() {
   const [userPrompt, setUserPrompt] = useState(""); // State for user input
   const [magicalPrompt, setMagicalPrompt] = useState(""); // State for magical prompt
@@ -19,20 +19,11 @@ export default function Home() {
   // Handle the first generate image button click (use userPrompt)
   const handleGenerateUserImage = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
       const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
       setImagePrompt(prompt); // Set the image prompt text field
       const data = await fetchGeneratedImage(prompt);
-      console.log("Generated Image from User Prompt:", data);
 
-      const imageId = data.id;
-
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const info = await fetchImage(imageId);
-      console.log("Fetched Image Data:", info);
-
-      const imageUrl = info?.imageUrl;
+      const imageUrl = data?.imageUrl;
       setImageUrl(imageUrl);
     } catch (error) {
       console.error("Error generating image from user prompt:", error);
@@ -42,22 +33,12 @@ export default function Home() {
   // Handle the second generate image button click (use magicalPrompt)
   const handleGenerateMagicalImage = async () => {
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 300));
-      // const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if magicalPrompt is empty
-      // setImagePrompt(prompt); // Set the image prompt text field
-      // const data = await fetchGeneratedImage(prompt);
-      // console.log("Generated Image from Magical Prompt:", data);
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if magicalPrompt is empty
+      setImagePrompt(prompt); // Set the image prompt text field
+      const data = await fetchGeneratedImage(prompt);
 
-      // console.log("id: ", data.id);
-      // const imageId = data.id;
-      const imageId = "e9fefd87-9786-4039-be34-06d8b99ee31a";
-
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      const info = await fetchImage(imageId);
-      console.log("Fetched Image Data:", info);
-
-      const imageUrl = info?.imageUrl;
+      const imageUrl = data?.imageUrl;
       setImageUrl(imageUrl);
     } catch (error) {
       console.error("Error generating image from magical prompt:", error);

@@ -19,7 +19,7 @@ export const ENDPOINTS = {
   GET_IMAGE_URLS: "/getImageUrlsFromS3",
   POST_IMAGE: "/uploadImageUrlsFromS3", // Upload PNG image in binary format
   // AWS Wrapper: OpenAI and text/image generation
-  GET_IMAGE: "/get-image",
+  // GET_IMAGE: "/get-image",
   GEN_TEXT: "/gen-text",
   GEN_IMAGE: "/gen-image",
 };

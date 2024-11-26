@@ -21,18 +21,24 @@ export const getImageUrlsFromS3 = async () => {
 export const uploadImageUrlsToS3 = async (image: Blob) => {
   const url = `${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.POST_IMAGE}`;
   console.log(url);
+
   const headers = {
-    "Content-Type": "application/octet-stream",
+    "Content-Type": "application/json", // Change to JSON for better compatibility
   };
+
   const reader = new FileReader();
   reader.readAsDataURL(image);
+
   const base64Image = await new Promise<string>((resolve, reject) => {
     reader.onloadend = () => resolve(reader.result as string);
     reader.onerror = reject;
   });
+
+  // Send the full Base64 string (with prefix)
   const body = JSON.stringify({
-    image: base64Image.split(",")[1], // Remove the data URL prefix
+    image: base64Image,
   });
+
   const options: RequestInit = {
     method: "POST",
     headers,
@@ -52,24 +58,24 @@ export const uploadImageUrlsToS3 = async (image: Blob) => {
 };
 
 // Get OpenAI image from AWS Wrapper
-export const getImageFromAWS = async (imageId: string) => {
-  const url = new URL(`${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.GET_IMAGE}`);
-  url.searchParams.append("apiVersion", COMMON_QUERIES.imageApiVersion);
-  url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
-  url.searchParams.append("imageId", imageId);
-  console.log(url);
+// export const getImageFromAWS = async (imageId: string) => {
+//   const url = new URL(`${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.GET_IMAGE}`);
+//   url.searchParams.append("apiVersion", COMMON_QUERIES.imageApiVersion);
+//   url.searchParams.append("apiKey", COMMON_QUERIES.apiKey);
+//   url.searchParams.append("imageId", imageId);
+//   console.log(url);
 
-  try {
-    const response = await fetch(url.toString());
-    if (!response.ok) {
-      throw new Error("Failed to fetch OpenAI image");
-    }
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching OpenAI image:", error);
-    throw error;
-  }
-};
+//   try {
+//     const response = await fetch(url.toString());
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch OpenAI image");
+//     }
+//     return response.json();
+//   } catch (error) {
+//     console.error("Error fetching OpenAI image:", error);
+//     throw error;
+//   }
+// };
 
 // Generate text with AWS Wrapper
 export const generateText = async (inputText: string) => {
