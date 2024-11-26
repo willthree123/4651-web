@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { uploadImage } from "../api/apiClient"; // Import the updated uploadImage function
 import { fetchImageUrls } from "../api/apiClient"; // Updated API for fetching image URLs
+import ChatBot from "../component/ChatBot";
 
 const Browse: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [communityImages, setCommunityImages] = useState<string[]>([]); // State to store image URLs
-
+  const [bubbleType, setBubbleType] = useState<"primary" | "error" | "success">("primary");
+  const [message, setMessage] = useState("");
   // Fetch community images function
   const fetchCommunityImages = async () => {
     try {
@@ -15,11 +17,17 @@ const Browse: React.FC = () => {
       if (response.status === "success") {
         console.log("Community images:", response.data.imageUrls); // Log the image URLs
         setCommunityImages(response.data.imageUrls); // Set the image URLs in the state
+        // setBubbleType("success");
+        // setMessage("Community images fetched successfully!");
       } else {
         console.error("Failed to fetch community images:", response.message);
+        setBubbleType("error");
+        setMessage("Failed to fetch community images.");
       }
     } catch (error) {
       console.error("Error fetching community images:", error);
+      setBubbleType("error");
+      setMessage("Error fetching community images.");
     }
   };
 
@@ -40,7 +48,9 @@ const Browse: React.FC = () => {
   // Handle image submission
   const handleSubmit = async () => {
     if (!image) {
-      alert("Please select an image first.");
+      // alert("Please select an image first.");
+      setBubbleType("error");
+      setMessage("Please select an image first.");
       return;
     }
 
@@ -57,21 +67,28 @@ const Browse: React.FC = () => {
       // console.log("Posting to URL:", response.url); // Log the URL
 
       if (response.status === "success") {
-        alert("Image uploaded successfully!");
+        // alert("Image uploaded successfully!");
+        setBubbleType("success");
+        setMessage("Image uploaded successfully!");
       } else {
         console.error("Error uploading image:", response);
-        alert("Error uploading image.");
+        // alert("Error uploading image.");
+        setBubbleType("error");
+        setMessage("Error uploading image.");
       }
     } catch (error) {
       console.error("Error uploading image:", error);
       if (error instanceof Error) {
-        alert(`Error uploading image: ${error.message}`);
+        // alert(`Error uploading image: ${error.message}`);
+        setBubbleType("error");
+        setMessage(`Error uploading image: ${error.message}`);
       } else {
-        alert("An unknown error occurred.");
+        // alert("An unknown error occurred.");
+        setBubbleType("error");
+        setMessage("An unknown error occurred.");
       }
     } finally {
       setLoading(false);
-      // Fetch the updated community images after successful upload
     }
   };
 
@@ -82,11 +99,12 @@ const Browse: React.FC = () => {
 
   return (
     <div className="container mx-auto ">
+      <ChatBot bubbleType={bubbleType} message={message} />
+
       {/* Row 1: Heading */}
       <div className="mb-6">
         <h1 className="text-4xl font-bold text-left">Upload Your Creation</h1>
       </div>
-      <div className="divider"></div>
 
       {/* Row 2: Image Upload */}
       <div className="mb-6">
@@ -100,10 +118,11 @@ const Browse: React.FC = () => {
           </div>
         )}
       </div>
+      <div className="divider"></div>
 
       {/* Row 3: Community Creations */}
       <div className="mb-6">
-        <h1 className="text-4xl font-bold text-left">Community Creations 🎨</h1>
+        <h1 className="text-4xl font-bold text-left mb-8">Community Creations 🎨</h1>
 
         {/* Display fetched community images */}
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
