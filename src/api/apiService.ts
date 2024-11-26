@@ -22,7 +22,7 @@ export const uploadImageUrlsToS3 = async (image: Blob) => {
   const url = `${BASE_URLS.PERSONAL_AWS}${ENDPOINTS.POST_IMAGE}`;
   console.log(url);
   const headers = {
-    "Content-Type": "application/json",
+    "Content-Type": "application/octet-stream",
   };
   const reader = new FileReader();
   reader.readAsDataURL(image);

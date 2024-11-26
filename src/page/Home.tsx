@@ -4,6 +4,7 @@ export default function Home() {
   const [userPrompt, setUserPrompt] = useState(""); // State for user input
   const [magicalPrompt, setMagicalPrompt] = useState(""); // State for magical prompt
   const [imageUrl, setImageUrl] = useState<string>(""); // State for storing the image URL
+  const [imagePrompt, setImagePrompt] = useState(""); // State for image prompt text field
 
   // Handle button click to fetch the generated text (magic prompt)
   const handleFetchGeneratedText = async () => {
@@ -20,6 +21,7 @@ export default function Home() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 300));
       const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
+      setImagePrompt(prompt); // Set the image prompt text field
       const data = await fetchGeneratedImage(prompt);
       console.log("Generated Image from User Prompt:", data);
 
@@ -40,12 +42,15 @@ export default function Home() {
   // Handle the second generate image button click (use magicalPrompt)
   const handleGenerateMagicalImage = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if magicalPrompt is empty
-      const data = await fetchGeneratedImage(prompt);
-      console.log("Generated Image from Magical Prompt:", data);
+      // await new Promise((resolve) => setTimeout(resolve, 300));
+      // const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if magicalPrompt is empty
+      // setImagePrompt(prompt); // Set the image prompt text field
+      // const data = await fetchGeneratedImage(prompt);
+      // console.log("Generated Image from Magical Prompt:", data);
 
-      const imageId = data.id;
+      // console.log("id: ", data.id);
+      // const imageId = data.id;
+      const imageId = "e9fefd87-9786-4039-be34-06d8b99ee31a";
 
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -136,13 +141,13 @@ export default function Home() {
             </label>
 
             {/* Conditionally render skeleton loader or the input field */}
-            {false /* Replace with a condition to check if there is content */ ? (
+            {imagePrompt ? (
               <input
                 id="imagePrompt"
                 type="text"
-                className="input input-bordered w-full flex-grow text-left align-top" // Added text-left and align-top
+                className="input input-bordered w-full flex-grow text-left align-top break-words" // Added break-words to make text wrap
                 readOnly
-                value="some content"
+                value={imagePrompt}
               />
             ) : (
               <div className="flex w-full flex-col gap-4">

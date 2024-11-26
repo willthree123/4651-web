@@ -46,7 +46,10 @@ export const fetchGeneratedText = async (inputText: string) => {
       //   console.log("Yes");
     }
 
-    const data = await generateText("Be creative! You are an artist. Generate me a detailed text prompt for generating ultra realistic AI image for the following object: " + inputText);
+    const data = await generateText(
+      "Prompt for Refinement Imagine you are an artist tasked with creating an ultra-realistic AI-generated image. Please provide a detailed prompt that includes: 1. A clear description of the object*: What is it? What are its key features? 2. The setting or background*: Where is the object located? What is the environment like? 3. *Specific details*: Include colors, textures, lighting, and any other elements that enhance realism. 4. *Artistic style*: What kind of artistic approach should be taken (e.g., hyper-realistic, impressionistic)? Your detailed prompt should be for the following object:" +
+        inputText
+    );
     console.log("Generated Text:", data);
     return data;
   } catch (error) {

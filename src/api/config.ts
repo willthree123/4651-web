@@ -3,7 +3,7 @@
 // Base URLs for the APIs
 export const BASE_URLS = {
   // Personal AWS: GET for image URLs and POST for image upload
-  PERSONAL_AWS: "https://phq27t0v05.execute-api.ap-southeast-2.amazonaws.com/default",
+  PERSONAL_AWS: "https://phq27t0v05.execute-api.ap-southeast-2.amazonaws.com/dev",
 };
 
 // Common query parameters
