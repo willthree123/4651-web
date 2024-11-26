@@ -33,15 +33,14 @@ export default function Home() {
   // Handle the second generate image button click (use magicalPrompt)
   const handleGenerateMagicalImage = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const prompt = magicalPrompt || "kiwi fruit"; // Use "kiwi fruit" if magicalPrompt is empty
+      const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
       setImagePrompt(prompt); // Set the image prompt text field
-      const data = await fetchGeneratedImage(prompt);
+      const data = await fetchGeneratedImage(magicalPrompt);
 
       const imageUrl = data?.imageUrl;
       setImageUrl(imageUrl);
     } catch (error) {
-      console.error("Error generating image from magical prompt:", error);
+      console.error("Error generating image from user prompt:", error);
     }
   };
 
