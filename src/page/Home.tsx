@@ -4,7 +4,7 @@ export default function Home() {
   const [userPrompt, setUserPrompt] = useState(""); // State for user input
   const [magicalPrompt, setMagicalPrompt] = useState(""); // State for magical prompt
   const [imageUrl, setImageUrl] = useState<string>(""); // State for storing the image URL
-  const [imagePrompt, setImagePrompt] = useState(""); // State for image prompt text field
+  const [genImagePrompt, setGenImagePrompt] = useState(""); // State for image prompt text field
 
   // Handle button click to fetch the generated text (magic prompt)
   const handleFetchGeneratedText = async () => {
@@ -20,7 +20,7 @@ export default function Home() {
   const handleGenerateUserImage = async () => {
     try {
       const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
-      setImagePrompt(prompt); // Set the image prompt text field
+      setGenImagePrompt(prompt); // Set the image prompt text field
       const data = await fetchGeneratedImage(prompt);
 
       const imageUrl = data?.imageUrl;
@@ -34,7 +34,7 @@ export default function Home() {
   const handleGenerateMagicalImage = async () => {
     try {
       const prompt = userPrompt || "kiwi fruit"; // Use "kiwi fruit" if userPrompt is empty
-      setImagePrompt(prompt); // Set the image prompt text field
+      setGenImagePrompt(magicalPrompt); // Set the image prompt text field
       const data = await fetchGeneratedImage(magicalPrompt);
 
       const imageUrl = data?.imageUrl;
@@ -121,13 +121,13 @@ export default function Home() {
             </label>
 
             {/* Conditionally render skeleton loader or the input field */}
-            {imagePrompt ? (
+            {genImagePrompt ? (
               <input
                 id="imagePrompt"
                 type="text"
                 className="input input-bordered w-full flex-grow text-left align-top break-words" // Added break-words to make text wrap
                 readOnly
-                value={imagePrompt}
+                value={genImagePrompt}
               />
             ) : (
               <div className="flex w-full flex-col gap-4">
@@ -151,14 +151,16 @@ export default function Home() {
           <div className="w-72 h-72">
             {/* If imageUrl is not set, show a skeleton */}
             {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt="Generated Image"
-                className="w-full h-full object-cover"
-                onClick={() => window.open(imageUrl, "_blank")} // Open image in a new tab
-              />
+              <a>
+                <img
+                  src={imageUrl}
+                  alt="Generated Image"
+                  className="w-full h-full object-cover"
+                  onClick={() => window.open(imageUrl, "_blank")} // Open image in a new tab
+                />
+              </a>
             ) : (
-              <div className="skeleton w-full h-full text-center flex justify-center items-center">300x300 Image Placeholder</div>
+              <div className="skeleton w-full h-full text-center flex justify-center items-center"></div>
             )}
           </div>
         </div>

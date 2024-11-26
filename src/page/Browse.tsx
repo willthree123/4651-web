@@ -8,24 +8,25 @@ const Browse: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [communityImages, setCommunityImages] = useState<string[]>([]); // State to store image URLs
 
-  // Fetch community images on component mount
-  useEffect(() => {
-    const fetchCommunityImages = async () => {
-      try {
-        const response = await fetchImageUrls();
-        if (response.status === "success") {
-          console.log("Community images:", response.data.imageUrls); // Log the image URLs
-          setCommunityImages(response.data.imageUrls); // Set the image URLs in the state
-        } else {
-          console.error("Failed to fetch community images:", response.message);
-        }
-      } catch (error) {
-        console.error("Error fetching community images:", error);
+  // Fetch community images function
+  const fetchCommunityImages = async () => {
+    try {
+      const response = await fetchImageUrls();
+      if (response.status === "success") {
+        console.log("Community images:", response.data.imageUrls); // Log the image URLs
+        setCommunityImages(response.data.imageUrls); // Set the image URLs in the state
+      } else {
+        console.error("Failed to fetch community images:", response.message);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching community images:", error);
+    }
+  };
 
-    fetchCommunityImages(); //Uncomment this
-  }, []);
+  // Fetch community images on component mount and when loading changes
+  useEffect(() => {
+    fetchCommunityImages();
+  }, [loading]);
 
   // Handle file selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +54,9 @@ const Browse: React.FC = () => {
 
       // Call the uploadImage API (passing the image as a Blob directly)
       const response = await uploadImage(imageBlob); // Pass the Blob to the API
-      console.log("Posting to URL:", response.url); // Log the URL
+      // console.log("Posting to URL:", response.url); // Log the URL
 
-      if (response.ok) {
+      if (response.status === "success") {
         alert("Image uploaded successfully!");
       } else {
         console.error("Error uploading image:", response);
@@ -70,6 +71,7 @@ const Browse: React.FC = () => {
       }
     } finally {
       setLoading(false);
+      // Fetch the updated community images after successful upload
     }
   };
 
@@ -107,13 +109,15 @@ const Browse: React.FC = () => {
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
           {communityImages.length > 0 ? (
             communityImages.map((url, index) => (
-              <div
-                key={index}
-                className="w-36 h-36 flex justify-start items-start border rounded p-1" // Align to left and top, with padding to avoid image being flush to the container's edge
-                onClick={() => handleImageClick(url)} // Open image in new tab on click
-              >
-                <img src={url} alt={`Community Creation ${index}`} className="w-full h-full object-cover cursor-pointer" />
-              </div>
+              <a>
+                <div
+                  key={index}
+                  className="w-36 h-36 flex justify-start items-start border rounded p-1" // Align to left and top, with padding to avoid image being flush to the container's edge
+                  onClick={() => handleImageClick(url)} // Open image in new tab on click
+                >
+                  <img src={url} alt={`Community Creation ${index}`} className="w-full h-full object-cover cursor-pointer" />
+                </div>
+              </a>
             ))
           ) : (
             <p>Loading community images...</p>

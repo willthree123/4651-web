@@ -22,7 +22,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/browse" element={<Browse />} /> {/* Add Browse route */}
-        <Route path="/test" element={<Test />} /> {/* Add Browse route */}
+        {/* <Route path="/test" element={<Test />} /> Add Browse route */}
       </Routes>
     </div>
   );
