@@ -1,50 +1,64 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🖌️ DreamFrame
+AI-Powered Prompt and Image Generator
 
-Currently, two official plugins are available:
+An interactive web application that enables users to create stunning AI-generated images using simple or enhanced prompts. The platform also supports uploading images to a community gallery and browsing shared works.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Placeholder for Project Screenshot](./assets/project-screenshot.png)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+### 🎨 **Dynamic Prompt-to-Image Generation**
+- Generate images based on user-defined text prompts.
+- Enhance creativity with an AI-generated *Magic Prompt* feature.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 🌟 **Community Gallery**
+- Browse images created and shared by the community.
+- Upload your masterpieces for others to see.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 📂 **Image Management**
+- Download generated images locally.
+- Effortlessly upload images to a shared gallery.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Technology Stack
+
+- **Frontend**: React, TypeScript, Daisy UI, TailwindCSS
+- **Backend**: Lambda Functions (for API interactions)
+- **AI Services**: Integration with DALL·E and GPT for text and image generation
+
+---
+
+## How to Use
+
+1. **Input a Prompt**: Type a description in the *Text Prompt* field and generate an image directly or enhance it with the *Magic Prompt* feature.
+2. **Generate an Image**: Click on "Generate Image" to visualize your prompt.
+3. **Download or Upload**: Save the image locally or share it with the community.
+4. **Browse the Gallery**: Explore and enjoy creative works from others.
+
+---
+
+## Author
+
+- **[Your Name]**  
+  [Your Role or Title]  
+  [Contact Information, if applicable]  
+
+---
+
+## Preview
+
+![Placeholder for Feature Screenshot](./assets/feature-screenshot.png)
+
+---
+
+## Acknowledgments
+
+This project is inspired by the innovative capabilities of AI in enhancing user creativity and providing a collaborative platform for sharing generated content.
+
+---
+
+> **Note**: Replace the placeholders for images (`./assets/project-screenshot.png` and `./assets/feature-screenshot.png`) with the actual paths to your screenshots.
