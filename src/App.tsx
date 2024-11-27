@@ -1,4 +1,5 @@
 //App.tsx
+import InstructionPopUp from "./component/InstructionPopUp";
 
 import { Routes, Route } from "react-router-dom";
 import Home from "./page/Home";
@@ -18,6 +19,8 @@ export default function App() {
 
   return (
     <div style={{ marginTop: 0 }}>
+      <InstructionPopUp />
+
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="p-4 pt-32 lg:pt-16 lg:pl-72">
         <Routes>
