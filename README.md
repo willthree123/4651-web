@@ -44,16 +44,22 @@ An interactive web application that enables users to create stunning AI-generate
 
 ---
 
-## Author
+## Documentation
 
-- Kok Siu Chung (SID:20896338)
-- Hsu Siu Kit (SID: 20960426)
+For more detailed instructions, visit our [documentation](./docs/documentation.md).
 
 ---
 
 ## Preview
 
 ![Index Screenshot](./README/browse.png)
+
+---
+
+## Author
+
+- Kok Siu Chung (SID:20896338)
+- Hsu Siu Kit (SID: 20960426)
 
 ---
 
