@@ -10,7 +10,7 @@ export const BASE_URLS = {
 export const COMMON_QUERIES = {
   imageApiVersion: "2023-06-01-preview",
   textApiVersion: "2024-10-01-preview",
-  apiKey: "9c0ad66d47fb4c088142459e9114c470",
+  apiKey: "c780408e10754da884f2c31269e233e1",
 };
 
 // Endpoints for Personal AWS and AWS Wrapper APIs
